@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.chart.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="540.0" prefWidth="809.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.report_page_controller">
+   <children>
+      <TableView fx:id="tableview" layoutX="151.0" layoutY="87.0" prefHeight="183.0" prefWidth="520.0" />
+      <Label layoutX="139.0" layoutY="30.0" text="Traffic Level" />
+      <Label fx:id="traffic_label" layoutX="208.0" layoutY="30.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="139.0" layoutY="54.0" text="Algorithem" />
+      <Label fx:id="algorithem_label" layoutX="208.0" layoutY="54.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="327.0" layoutY="30.0" text="Car Insert Method" />
+      <Label fx:id="insert_method_label" layoutX="431.0" layoutY="30.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="327.0" layoutY="54.0" text="Number of Lanes" />
+      <Label fx:id="number_of_lanes_label" layoutX="431.0" layoutY="54.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="507.0" layoutY="30.0" text="Total Number of Cars" />
+      <Label fx:id="total_avg_label" layoutX="663.0" layoutY="54.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="507.0" layoutY="54.0" text="Total Average Waiting Time" />
+      <Label fx:id="total_cars_label" layoutX="663.0" layoutY="30.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <PieChart fx:id="pie" layoutX="84.0" layoutY="270.0" prefHeight="256.0" prefWidth="321.0" />
+      <BarChart fx:id="bar_chart" layoutX="407.0" layoutY="270.0" prefHeight="256.0" prefWidth="321.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </BarChart>
+      <Label layoutX="139.0" layoutY="281.0" text="Green Time" />
+   </children>
+</AnchorPane>

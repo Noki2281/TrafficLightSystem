@@ -22,19 +22,15 @@
          <children>
             <Pane prefHeight="471.0" prefWidth="522.0">
                <children>
-                  <TableView layoutX="168.0" layoutY="36.0" prefHeight="260.0" prefWidth="301.0">
-                    <columns>
-                      <TableColumn prefWidth="98.0" text="Lane Number" />
-                      <TableColumn prefWidth="77.0" text="Cars" />
-                        <TableColumn prefWidth="125.0" text="AVG Wating Time" />
-                    </columns>
-                  </TableView>
+                  <TableView fx:id="tableView" layoutX="168.0" layoutY="36.0" prefHeight="260.0" prefWidth="301.0" />
                   <ComboBox fx:id="algorithem_combobox" layoutX="14.0" layoutY="33.0" prefHeight="25.0" prefWidth="124.0" promptText="Algorithem" />
                   <Button layoutX="14.0" layoutY="73.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="124.0" text="Edit CrrossRoad Attributes" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" />
-                  <Button layoutX="14.0" layoutY="131.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="124.0" text="Create Report" />
+                  <Button layoutX="14.0" layoutY="131.0" mnemonicParsing="false" onAction="#goToReportPage" prefHeight="39.0" prefWidth="124.0" text="Create Report" />
                   <Label layoutX="14.0" layoutY="179.0" prefHeight="32.0" prefWidth="124.0" text="Traffic Level:" textAlignment="CENTER" />
-                  <ComboBox fx:id="traffic_combo_box" layoutX="85.0" layoutY="183.0" prefHeight="25.0" prefWidth="53.0" promptText="1" />
-                  <ComboBox fx:id="random_combobox" layoutX="14.0" layoutY="217.0" prefHeight="25.0" prefWidth="124.0" promptText="Randomly" />
+                  <ComboBox fx:id="traffic_combo_box" layoutX="85.0" layoutY="183.0" onAction="#trafficLevelSet" prefHeight="25.0" prefWidth="53.0" promptText="1" />
+                  <ComboBox fx:id="random_combobox" layoutX="14.0" layoutY="217.0" prefHeight="25.0" prefWidth="124.0" promptText="Random" />
+                  <Button fx:id="start_btn" layoutX="13.0" layoutY="263.0" mnemonicParsing="false" onAction="#startSimulation" prefHeight="25.0" prefWidth="53.0" text="Start" />
+                  <Button fx:id="stop_btn" layoutX="86.0" layoutY="263.0" mnemonicParsing="false" onAction="#stopSimulation" prefHeight="25.0" prefWidth="53.0" text="Stop" />
                </children>
             </Pane>
          </children>

@@ -8,6 +8,11 @@ public class Lane {
 	private boolean is_green;
 	private int cars_crossing_per_second;
 	private ArrayList<Lane> relatives;
+	private int laneNum;
+	public int reportTotalCars = 0;
+	public double reportTotalAvgTime = 0;
+	public int reportIdleGreen = 0;
+	public int reportGreenCount = 0;
 	
 	public Lane(int weight, int max_idle, int min_green,int cars_crossing_per_second) {
 		super();
@@ -72,5 +77,12 @@ public class Lane {
 	public void setRelatives(ArrayList<Lane> relatives) {
 		this.relatives = relatives;
 	}
-	
+
+	public int getLaneNum() {
+		return laneNum;
+	}
+
+	public void setLaneNum(int laneNum) {
+		this.laneNum = laneNum;
+	}
 }
