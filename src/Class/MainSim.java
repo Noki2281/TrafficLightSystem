@@ -1,8 +1,10 @@
+package Class;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class Main {
+public class MainSim {
 
 	public static void main(String[] args) {
 
