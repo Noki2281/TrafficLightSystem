@@ -7,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
@@ -16,7 +15,6 @@ import javafx.scene.control.TableView;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 public class report_page_controller {
 
@@ -59,23 +57,24 @@ public class report_page_controller {
     public void initialize(){
         DecimalFormat df = new DecimalFormat("#.##");
         df.setRoundingMode(RoundingMode.CEILING);
+        int maxIterations = 10000;
 
         TableColumn<Lane,String> laneCol = new TableColumn<>("Lane #");
         laneCol.setCellValueFactory(c-> new SimpleStringProperty("Lane "+c.getValue().getLaneNum()));
         TableColumn<Lane,String> carsCol = new TableColumn<>("Number of Cars");
         carsCol.setCellValueFactory(c-> new SimpleStringProperty(""+c.getValue().reportTotalCars));
         TableColumn<Lane,String> avgCol = new TableColumn<>("AVG Waiting Time");
-        avgCol.setCellValueFactory(c-> new SimpleStringProperty(df.format(c.getValue().reportTotalAvgTime/1000)));
+        avgCol.setCellValueFactory(c-> new SimpleStringProperty(df.format(c.getValue().reportTotalAvgTime/maxIterations)));
         TableColumn<Lane,String> min_greenCol = new TableColumn<>("Min Green Time");
         min_greenCol.setCellValueFactory(c-> new SimpleStringProperty(""+c.getValue().getMin_green()));
         TableColumn<Lane,String> max_idleCol = new TableColumn<>("Max Idle Time");
         max_idleCol.setCellValueFactory(c-> new SimpleStringProperty(""+c.getValue().getMax_idle()));
         tableview.getColumns().addAll(laneCol,carsCol,avgCol,min_greenCol,max_idleCol);
 
-        algorithem_label.setText(main_window_controller.algorithem);
+        algorithem_label.setText(main_window_controller.algorithm);
         traffic_label.setText(main_window_controller.trafficLevel + "");
         insert_method_label.setText(main_window_controller.insertMethod + "");
-        ms = new MainSim(main_window_controller.trafficLevel, false, 1000);
+        ms = new MainSim(main_window_controller.trafficLevel, false, maxIterations,main_window_controller.algo, main_window_controller.mode);
         ms.run();
 
         tableview.setItems(FXCollections.observableArrayList(ms.getLaneList()));
@@ -88,10 +87,10 @@ public class report_page_controller {
         for (Lane l : ms.getLaneList()){
             totalNumberOfCars+=l.reportTotalCars;
             totalNumberOfLanes++;
-            totalAvg += (l.reportTotalAvgTime/1000)*totalNumberOfCars;
+            totalAvg += (l.reportTotalAvgTime/maxIterations)*totalNumberOfCars;
             String laneName = "Lane " + l.getLaneNum();
             series2.getData().add(new XYChart.Data<>(laneName,((double)l.reportIdleGreen/(double)l.reportGreenCount)*100));
-            pie.getData().add(new PieChart.Data("Lane "+l.getLaneNum() + " - " + df.format(((double)l.reportGreenCount)/(double)10) + "%",l.reportGreenCount));
+            pie.getData().add(new PieChart.Data("Lane "+l.getLaneNum() + " - " + df.format((((double)l.reportGreenCount)/(double)maxIterations)*100) + "%",l.reportGreenCount));
         }
         bar_chart.getData().addAll(series2);
         number_of_lanes_label.setText(totalNumberOfLanes+"");
@@ -116,7 +115,6 @@ public class report_page_controller {
             {
                 for(Legend.LegendItem items : ((Legend)n).getItems())
                 {
-                    System.out.println("Legend item text: " + items.getText());
                     if(items.getText().equals("Green Idle Time %"))
                     {
                         items.getSymbol().setStyle("-fx-bar-fill: #3FCA56;");

@@ -63,6 +63,7 @@ public class Lane {
 	public void passCars() {
 		for (int i=0; i<Math.min(carList.size(), cars_crossing_per_second); i++){
 			carList.remove(0);
+			reportTotalCars++;
 		}
 	}
 	public int getCars_crossing_per_second() {

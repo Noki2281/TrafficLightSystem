@@ -37,18 +37,16 @@ public class main_window_controller {
     public static MainSim simInstance;
     public static TableUpdater tableUpdater;
     public static int trafficLevel = 1;
-    public static String algorithem="Standard";
-    public static String insertMethod="Random";
+    public static String algorithm ="Standard";
+    public static String insertMethod = "Random";
+    public static int algo = 1;
+    public static int mode = 1;
 
     @FXML
     public void initialize(){
-//        algorithem = algorithem_combobox.getValue().toString();
-//        insertMethod = random_combobox.getValue().toString();
         TableColumn<Lane,String> laneCol = new TableColumn<>("Lane #");
         laneCol.setCellValueFactory(c-> new SimpleStringProperty(""+c.getValue().getLaneNum()));
-        TableColumn<Lane,String> colorCol = new TableColumn<>("Color");
-        colorCol.setCellValueFactory(c-> new SimpleStringProperty(""+c.getValue().is_green()));
-        colorCol.setCellFactory(column -> new TableCell<Lane, String>() {
+        laneCol.setCellFactory(column -> new TableCell<Lane, String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
@@ -57,8 +55,9 @@ public class main_window_controller {
                 } else {
                     setText(item);
                     TableRow currentRow = getTableRow();
-                    if (item.equals("true")) {
-                        currentRow.setStyle("-fx-background-color: green;");
+                    Lane l = getTableView().getItems().get(getIndex());
+                    if (l.is_green()) {
+                        currentRow.setStyle("-fx-background-color: #3FCA56;");
 
                     } else currentRow.setStyle("-fx-background-color: red;");
                 }
@@ -68,12 +67,14 @@ public class main_window_controller {
         carsCol.setCellValueFactory(c-> new SimpleStringProperty(""+c.getValue().getCarList().size()));
         TableColumn<Lane,String> avgCol = new TableColumn<>("AVG Waiting Time");
         avgCol.setCellValueFactory(c-> new SimpleStringProperty(calcAverageForLane(c.getValue())));
-        tableView.getColumns().addAll(laneCol,colorCol,carsCol,avgCol);
+        TableColumn<Lane,String> weightCol = new TableColumn<>("Lane Weight");
+        weightCol.setCellValueFactory(c-> new SimpleStringProperty(""+c.getValue().getWeight()));
+        tableView.getColumns().addAll(laneCol,carsCol,avgCol,weightCol);
 
         for (int i = 0; i<10; i++)
             traffic_combo_box.getItems().add(""+(i+1));
         algorithem_combobox.getItems().addAll("Standard", "Smart");
-        random_combobox.getItems().addAll("Random", "Equal");
+        random_combobox.getItems().addAll("Random", "Equal","Weight");
         tableUpdater = new TableUpdater(simInstance);
         updateThread = new Thread(tableUpdater);
         updateThread.start();
@@ -81,7 +82,8 @@ public class main_window_controller {
 
     @FXML
     public void startSimulation(){
-        if (simInstance==null) simInstance = new MainSim(trafficLevel, true,0);
+        if (simInstance==null)
+            simInstance = new MainSim(trafficLevel, true,0,algo,mode);
         tableUpdater = new TableUpdater(simInstance);
         updateThread = new Thread(tableUpdater);
         updateThread.start();
@@ -104,6 +106,31 @@ public class main_window_controller {
         trafficLevel = Integer.parseInt(traffic_combo_box.getValue().toString());
         if (simInstance!=null){
             simInstance.setTrafficLevel(trafficLevel);
+        }
+    }
+
+    @FXML
+    public void algorithmSelect(){
+        algorithm = algorithem_combobox.getValue().toString();
+
+        //algo = 0;
+        if (algorithm.equals("Standard")) algo = MainSim.STANDARD;
+        if (algorithm.equals("Smart")) algo = MainSim.SMART;
+        if (algorithm.equals("Standard Waze")) algo = MainSim.STANDARD_WAZE;
+        if (algorithm.equals("Sensor")) algo = MainSim.SENSOR;
+        if (simInstance!=null){
+            simInstance.setAlgorithm(algo);
+        }
+    }
+
+    @FXML
+    public void insertModeSelect(){
+        insertMethod = random_combobox.getValue().toString();
+        if (insertMethod.equals("Random")) mode = MainSim.RANDOM;
+        if (insertMethod.equals("Equal")) mode = MainSim.EQUAL;
+        if (insertMethod.equals("Weight")) mode = MainSim.WEIGHT;
+        if (simInstance!=null){
+            simInstance.setInsertMode(mode);
         }
     }
 
