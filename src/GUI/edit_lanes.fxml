@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="650.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.edit_lanes_controller">
+   <children>
+      <TableView fx:id="lane_table" layoutX="94.0" layoutY="101.0" prefHeight="190.0" prefWidth="812.0" />
+      <Button fx:id="saveBtn" layoutX="781.0" layoutY="303.0" mnemonicParsing="false" onAction="#saveBtnPressed" text="Save" />
+      <Button layoutX="711.0" layoutY="303.0" mnemonicParsing="false" text="Export" />
+   </children>
+</AnchorPane>

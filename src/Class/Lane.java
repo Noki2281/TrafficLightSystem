@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Lane {
 	private ArrayList<Car> carList;
-	private int weight,max_idle,red_count,min_green;
+	private int weight, cycle_time,red_count,min_green,max_idle_time;
 	private boolean is_green;
 	private int cars_crossing_per_second;
 	private ArrayList<Lane> relatives;
@@ -13,16 +13,20 @@ public class Lane {
 	public double reportTotalAvgTime = 0;
 	public int reportIdleGreen = 0;
 	public int reportGreenCount = 0;
+	private int lambda;
 	
-	public Lane(int weight, int max_idle, int min_green,int cars_crossing_per_second) {
+	public Lane(int laneNum, int weight, int cycle_time, int min_green, int cars_crossing_per_second, int lambda,int max_idle_time) {
 		super();
+		this.laneNum = laneNum;
 		this.carList = new ArrayList<>();
 		this.weight = weight;
-		this.max_idle = max_idle;
-		this.red_count = 0;
+		this.cycle_time = cycle_time;
+		this.red_count = 1000;
 		this.min_green = min_green;
 		this.cars_crossing_per_second = cars_crossing_per_second;
 		this.relatives = new ArrayList<>();
+		this.lambda = lambda;
+		this.max_idle_time = max_idle_time;
 	}
 	public ArrayList<Car> getCarList() {
 		return carList;
@@ -36,11 +40,11 @@ public class Lane {
 	public void setWeight(int weight) {
 		this.weight = weight;
 	}
-	public int getMax_idle() {
-		return max_idle;
+	public int getCycle_time() {
+		return cycle_time;
 	}
-	public void setMax_idle(int max_idle) {
-		this.max_idle = max_idle;
+	public void setCycle_time(int cycle_time) {
+		this.cycle_time = cycle_time;
 	}
 	public int getRed_count() {
 		return red_count;
@@ -85,5 +89,21 @@ public class Lane {
 
 	public void setLaneNum(int laneNum) {
 		this.laneNum = laneNum;
+	}
+
+	public int getLambda() {
+		return lambda;
+	}
+
+	public void setLambda(int lambda) {
+		this.lambda = lambda;
+	}
+
+	public int getMax_idle_time() {
+		return max_idle_time;
+	}
+
+	public void setMax_idle_time(int max_idle_time) {
+		this.max_idle_time = max_idle_time;
 	}
 }

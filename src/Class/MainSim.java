@@ -13,9 +13,9 @@ public class MainSim implements Runnable{
 	public static final int STANDARD_WAZE = 3;
 	public static final int SENSOR = 4;
 
-	public static final int RANDOM = 1;
-	public static final int EQUAL = 2;
-	public static final int WEIGHT = 3;
+	public static final int EQUAL = 1;
+	public static final int UNIFORM = 2;
+	public static final int POISSON = 3;
 
 	Crossroad cr1;
 	ArrayList<Lane> laneList;
@@ -23,76 +23,107 @@ public class MainSim implements Runnable{
 	int greenLane = 0;
 	int time;
 	private boolean isLive;
-	private int trafficLevel;
 	private int maxIterations;
 	private int algorithm;
 	private int insertMode;
+	private static boolean generateCars = true;
+	private static int carsInsertedArray[][];
+	public static int carsGeneratedSum = 0;
+	private int[] totalNumOfCarsPerTime;
 
 
-	public MainSim(int trafficLevel, boolean simLive, int maxIterations, int algorithm, int insertMode){
+	public MainSim(boolean simLive, int maxIterations, int algorithm, int insertMode, Crossroad cr){
 		this.algorithm = algorithm;
 		this.insertMode = insertMode;
-		this.trafficLevel = trafficLevel;
 		this.maxIterations = maxIterations;
 		isLive = simLive;
 		time = 0;
-		cr1 = new Crossroad();
-		Lane l1 = new Lane(3,20,10,4);
-		l1.setLaneNum(1);
-		Lane l2 = new Lane(1,30,10,2);
-		l2.setLaneNum(2);
-		Lane l3 = new Lane(2,30,10,2);
-		l3.setLaneNum(3);
-		Lane l4 = new Lane(3,20,10,4);
-		l4.setLaneNum(4);
-		l1.getRelatives().add(l4);
-		l3.getRelatives().add(l4);
-		l4.getRelatives().add(l1);
-		cr1.getLaneList().add(l1);
-		cr1.getLaneList().add(l2);
-		cr1.getLaneList().add(l3);
-		cr1.getLaneList().add(l4);
+		cr1 = cr;
 		laneList = cr1.getLaneList();
+		totalNumOfCarsPerTime = new int[maxIterations];
 	}
 
 	public void run() {
-
+		if (generateCars) {
+			carsGeneratedSum = 0;
+			carsInsertedArray = new int[maxIterations][laneList.size()];
+		}
+		int []u_time = new int[laneList.size()];
 		while (true){
+			int carsRightNow = 0;
+			for (Lane l : laneList){
+				carsRightNow += l.getCarList().size();
+			}
+			totalNumOfCarsPerTime[time] = carsRightNow;
 			time ++;
-			Random r = new Random();
-			int carNum = r.nextInt(trafficLevel+1);
-			switch (insertMode){
-				default:
-				case RANDOM:{
-					//selecting lane
-					int laneNum = r.nextInt(laneList.size());
-					//add cars to lane
-					for (int i=0; i<carNum; i++){
-						Lane l = laneList.get(laneNum);
-						l.getCarList().add(new Car(time));
-					}
-					break;
-				}
-				case EQUAL:{
+			if (generateCars) {
+				Random r = new Random();
 
-					//add cars to all lanes
-					for (int i=0; i<carNum; i++) {
-						for (Lane l : laneList) {
-							l.getCarList().add(new Car(time));
-							l.reportTotalCars++;
-						}
+				switch (insertMode) {
+					default:
+					case EQUAL: {
+						for (int i=0; i<laneList.size(); i++){
+							Lane l = laneList.get(i);
+							if (l.getLambda()<=60)
+								if (time%(60/l.getLambda()) == 0){
+								l.getCarList().add(new Car(time));
+								carsInsertedArray[time-1][i] = 1;
+								}
+							else
+								{
+									int extra = (r.nextInt(60)<(l.getLambda()%60) ? 1 : 0);
+									for (int j=0; j< (l.getLambda()/60) + extra ; j++){
+										l.getCarList().add(new Car(time));
+										}
+									carsInsertedArray[time-1][i] = (l.getLambda()/60) + extra;
+								}
+							}
+						break;
 					}
-					break;
+					case UNIFORM: {
+						for (int i = 0; i<laneList.size(); i++){
+							Lane l = laneList.get(i);
+							if (l.getLambda()<=60){
+								u_time[i]--;
+								//initial time
+								if (u_time[i] == -1) u_time[i] = r.nextInt(((2*60)/l.getLambda())+1);
+								while (u_time[i] == 0){
+									l.getCarList().add(new Car(time));
+									carsInsertedArray[time-1][i]++;
+									u_time[i] = r.nextInt(((2*60)/l.getLambda())+1);
+								}
+							}
+							else {
+								int uniformCarNum = r.nextInt(((l.getLambda()*2)/60)+1);
+								for (int j = 0; j<uniformCarNum; j++){
+									l.getCarList().add(new Car(time));
+									carsInsertedArray[time-1][i]++;
+								}
+							}
+						}
+						break;
+					}
+					case POISSON: {
+						for (int i = 0; i<laneList.size(); i++) {
+							Lane l = laneList.get(i);
+							u_time[i]--;
+							//initial time
+							if (u_time[i] == -1) u_time[i] = getPoisson((60)/(double)l.getLambda());
+							while (u_time[i] == 0){
+								l.getCarList().add(new Car(time));
+								carsInsertedArray[time-1][i]++;
+								u_time[i] = getPoisson((60)/(double)l.getLambda());
+							}
+						}
+						break;
+					}
 				}
-				case WEIGHT:{
-					for (Lane l : laneList) {
-						int adjustedCarNum = r.nextInt(l.getWeight()*carNum+1);
-						for (int i=0; i<adjustedCarNum; i++) {
-							l.getCarList().add(new Car(time));
-							l.reportTotalCars++;
-						}
+			}
+			else {
+				for (int i = 0; i<laneList.size(); i++){
+					for (int j = 0; j<carsInsertedArray[time-1][i]; j++){
+						laneList.get(i).getCarList().add(new Car(time));
 					}
-					break;
 				}
 			}
 			//Advance red count for all red lanes
@@ -107,7 +138,7 @@ public class MainSim implements Runnable{
 					if (greenTime==0){
 						for (int i=0; i<laneList.size(); i++){
 							Lane l = laneList.get(i);
-							if (l.getRed_count() >= l.getMax_idle()){ //select lane with red_count >= max_idle
+							if (l.getRed_count() >= l.getCycle_time()){ //select lane with red_count >= cycle_time
 								greenLane = i;
 								greenTime = l.getMin_green();
 								l.setRed_count(0);
@@ -130,7 +161,7 @@ public class MainSim implements Runnable{
 					boolean hanuk = false;
 					for (int i=0; i<laneList.size(); i++) {
 						Lane l = laneList.get(i);
-						if (l.getRed_count() > l.getMax_idle()*20){
+						if (l.getRed_count() > l.getMax_idle_time()){
 							greenLane = i;
 							hanuk = true;
 						}
@@ -214,8 +245,31 @@ public class MainSim implements Runnable{
 			}
 			if (greenTime > 0) greenTime--;
 
-			if (maxIterations == time) return;
+			if (maxIterations == time) {
+				if (generateCars) {
+					generateCars = false;
+					for (int i = 0; i<MainSim.getCarsInsertedArray().length; i++){
+						for (int j=0; j<laneList.size(); j++){
+							carsGeneratedSum += MainSim.getCarsInsertedArray()[i][j];
+						}
+					}
+				}
+				return;
+			}
 		}
+	}
+
+	public static int getPoisson(double lambda) {
+		double L = Math.exp(-lambda);
+		double p = 1.0;
+		int k = 0;
+
+		do {
+			k++;
+			p *= Math.random();
+		} while (p > L);
+
+		return k - 1;
 	}
 
 	public Crossroad getCr1() {
@@ -266,14 +320,6 @@ public class MainSim implements Runnable{
 		isLive = live;
 	}
 
-	public int getTrafficLevel() {
-		return trafficLevel;
-	}
-
-	public void setTrafficLevel(int trafficLevel) {
-		this.trafficLevel = trafficLevel;
-	}
-
 	public int getAlgorithm() {
 		return algorithm;
 	}
@@ -288,5 +334,37 @@ public class MainSim implements Runnable{
 
 	public void setInsertMode(int insertMode) {
 		this.insertMode = insertMode;
+	}
+
+	public int getMaxIterations() {
+		return maxIterations;
+	}
+
+	public void setMaxIterations(int maxIterations) {
+		this.maxIterations = maxIterations;
+	}
+
+	public static boolean isGenerateCars() {
+		return generateCars;
+	}
+
+	public static void setGenerateCars(boolean generateCars) {
+		MainSim.generateCars = generateCars;
+	}
+
+	public static int[][] getCarsInsertedArray() {
+		return carsInsertedArray;
+	}
+
+	public static void setCarsInsertedArray(int[][] carsInsertedArray) {
+		MainSim.carsInsertedArray = carsInsertedArray;
+	}
+
+	public int[] getTotalNumOfCarsPerTime() {
+		return totalNumOfCarsPerTime;
+	}
+
+	public void setTotalNumOfCarsPerTime(int[] totalNumOfCarsPerTime) {
+		this.totalNumOfCarsPerTime = totalNumOfCarsPerTime;
 	}
 }
