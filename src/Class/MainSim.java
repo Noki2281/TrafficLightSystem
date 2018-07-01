@@ -157,7 +157,7 @@ public class MainSim implements Runnable{
 					break;
 				}
 				case SMART:{
-					//if somebody hanuk
+					//if somebody deadlocked
 					boolean hanuk = false;
 					for (int i=0; i<laneList.size(); i++) {
 						Lane l = laneList.get(i);
@@ -168,21 +168,21 @@ public class MainSim implements Runnable{
 					}
 					if (!hanuk && (greenTime==0 || laneList.get(greenLane).getCarList().size()==0)){
 						double maxTWM = 0;
-						int maxLaneTWM = 0;
-						for (int i=0; i<laneList.size(); i++) {
-							double TWM = 0;
-							Lane l = laneList.get(i);
-							ArrayList<Car> cars = l.getCarList();
-							double avg = 0;
-							for (Car c : cars){
-								avg += time - c.getTime();
-							}
-							avg = avg==0? 0: avg/(cars.size());
-							TWM = l.getWeight()*l.getCarList().size()*avg;
-							if (maxTWM < TWM) {
-								maxTWM = TWM;
-								maxLaneTWM = i;
-							}
+							int maxLaneTWM = 0;
+							for (int i=0; i<laneList.size(); i++) {
+								double TWM = 0;
+								Lane l = laneList.get(i);
+								ArrayList<Car> cars = l.getCarList();
+								double avg = 0;
+								for (Car c : cars){
+									avg += time - c.getTime();
+								}
+								avg = avg==0? 0: avg/(cars.size());
+								TWM = l.getWeight()*l.getCarList().size()*avg;
+								if (maxTWM < TWM) {
+									maxTWM = TWM;
+									maxLaneTWM = i;
+								}
 						}
 						greenLane = maxLaneTWM;
 					}
@@ -235,9 +235,8 @@ public class MainSim implements Runnable{
 			//laneList.get(greenLane).passCars();
 			if (isLive) {
 				try {
-					TimeUnit.MILLISECONDS.sleep(250);
+					TimeUnit.MILLISECONDS.sleep(1000);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

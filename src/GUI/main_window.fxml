@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -9,25 +11,83 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
-
-<AnchorPane prefHeight="650.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.main_window_controller">
+<AnchorPane prefHeight="650.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.main_window_controller">
    <children>
-      <ComboBox fx:id="random_combobox" layoutX="234.0" layoutY="160.0" onAction="#insertModeSelect" prefHeight="25.0" prefWidth="124.0" promptText="Equal" />
-      <ComboBox fx:id="algorithem_combobox" layoutX="234.0" layoutY="126.0" onAction="#algorithmSelect" prefHeight="25.0" prefWidth="124.0" promptText="Standard" />
-      <Label layoutX="136.0" layoutY="198.0" text="Cars Generated" />
-      <Button layoutX="253.0" layoutY="273.0" mnemonicParsing="false" onAction="#goToReportPage" prefHeight="46.0" prefWidth="106.0" text="Create Report" />
-      <Button fx:id="edit_lanesBtn" layoutX="136.0" layoutY="273.0" mnemonicParsing="false" onAction="#edit_lanesPressed" prefHeight="46.0" prefWidth="106.0" text="Edit CrrossRoad Attributes" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" />
-      <Button fx:id="start_btn" layoutX="508.0" layoutY="333.0" mnemonicParsing="false" onAction="#startSimulation" prefHeight="25.0" prefWidth="53.0" text="Start" />
-      <Label layoutX="136.0" layoutY="130.0" prefHeight="17.0" prefWidth="85.0" text="Algorithem" />
-      <Label layoutX="136.0" layoutY="164.0" text="Car Insert Mode" />
-      <Label layoutX="136.0" layoutY="231.0" text="Iterations (Seconds)" />
-      <Label fx:id="carsGenNum" layoutX="293.0" layoutY="198.0" text="0">
+      <ImageView fitHeight="272.0" fitWidth="486.0" layoutX="514.0" layoutY="378.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <image>
+            <Image url="@1.jpg" />
+         </image>
+      </ImageView>
+      <ComboBox fx:id="random_combobox" layoutX="234.0" layoutY="127.0" onAction="#insertModeSelect" prefHeight="25.0" prefWidth="124.0" promptText="Equal" />
+      <ComboBox fx:id="algorithem_combobox" layoutX="234.0" layoutY="93.0" onAction="#algorithmSelect" prefHeight="25.0" prefWidth="124.0" promptText="Standard" />
+      <Label layoutX="136.0" layoutY="165.0" text="Cars Generated" />
+      <Button layoutX="253.0" layoutY="240.0" mnemonicParsing="false" onAction="#goToReportPage" prefHeight="46.0" prefWidth="106.0" text="Create Report" />
+      <Button fx:id="edit_lanesBtn" layoutX="136.0" layoutY="240.0" mnemonicParsing="false" onAction="#edit_lanesPressed" prefHeight="46.0" prefWidth="106.0" text="Edit Crossroad Attributes" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" />
+      <Button fx:id="start_btn" layoutX="508.0" layoutY="300.0" mnemonicParsing="false" onAction="#startSimulation" prefHeight="25.0" prefWidth="53.0" text="Start" />
+      <Label layoutX="136.0" layoutY="97.0" prefHeight="17.0" prefWidth="85.0" text="Algorithem" />
+      <Label layoutX="136.0" layoutY="131.0" text="Car Insert Mode" />
+      <Label layoutX="136.0" layoutY="198.0" text="Iterations (Seconds)" />
+      <Label fx:id="carsGenNum" layoutX="293.0" layoutY="165.0" text="0">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <TextField fx:id="iterationsTxt" alignment="CENTER" layoutX="254.0" layoutY="227.0" onAction="#iterationsTxtChanged" prefHeight="25.0" prefWidth="104.0" text="1000" />
-      <Button fx:id="stop_btn" layoutX="583.0" layoutY="333.0" mnemonicParsing="false" onAction="#stopSimulation" prefHeight="25.0" prefWidth="53.0" text="Stop" />
-      <TableView fx:id="tableView" layoutX="398.0" layoutY="108.0" prefHeight="215.0" prefWidth="347.0" />
+      <TextField fx:id="iterationsTxt" alignment="CENTER" layoutX="254.0" layoutY="194.0" onAction="#iterationsTxtChanged" prefHeight="25.0" prefWidth="104.0" text="1000" />
+      <Button fx:id="stop_btn" layoutX="583.0" layoutY="300.0" mnemonicParsing="false" onAction="#stopSimulation" prefHeight="25.0" prefWidth="53.0" text="Stop" />
+      <TableView fx:id="tableView" layoutX="398.0" layoutY="108.0" prefHeight="139.0" prefWidth="328.0" />
+      <MenuBar layoutY="8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+                  <MenuItem mnemonicParsing="false" text="Open..." />
+                  <MenuItem mnemonicParsing="false" text="Save" />
+                  <MenuItem mnemonicParsing="false" text="Save as..." />
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Cars">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Import..." />
+                  <MenuItem mnemonicParsing="false" text="Export..." />
+                  <MenuItem mnemonicParsing="false" text="Reset" />
+              </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <ImageView fitHeight="289.0" fitWidth="486.0" layoutX="155.0" layoutY="347.0">
+         <image>
+            <Image url="@Intersection.jpg" />
+         </image>
+      </ImageView>
+      <Label fx:id="label1" layoutX="316.0" layoutY="443.0" style="-fx-background-color: red; -fx-background-radius: 10;" text="1">
+         <font>
+            <Font name="System Bold" size="27.0" />
+         </font>
+      </Label>
+      <Label fx:id="label2" layoutX="414.0" layoutY="540.0" style="-fx-background-color: red; -fx-background-radius: 10;" text="2">
+         <font>
+            <Font name="System Bold" size="27.0" />
+         </font>
+      </Label>
+      <Label fx:id="label3" layoutX="533.0" layoutY="414.0" style="-fx-background-color: red; -fx-background-radius: 10;" text="3">
+         <font>
+            <Font name="System Bold" size="27.0" />
+         </font>
+      </Label>
+      <Label fx:id="label4" layoutX="533.0" layoutY="372.0" style="-fx-background-color: red; -fx-background-radius: 10;" text="4">
+         <font>
+            <Font name="System Bold" size="27.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

@@ -37,6 +37,18 @@ public class main_window_controller {
     @FXML
     public TextField iterationsTxt;
 
+    @FXML
+    private Label label1;
+
+    @FXML
+    private Label label2;
+
+    @FXML
+    private Label label3;
+
+    @FXML
+    private Label label4;
+
     public static final String EQUAL = "Equal";
     public static final String UNIFORM = "Uniform";
     public static final String POISSON = "Poisson";
@@ -94,12 +106,11 @@ public class main_window_controller {
                     Lane l = getTableView().getItems().get(getIndex());
                     if (l.is_green()) {
                         currentRow.setStyle("-fx-background-color: #3FCA56;");
-
                     } else currentRow.setStyle("-fx-background-color: red;");
                 }
             }
         });
-        TableColumn<Lane,String> carsCol = new TableColumn<>("Number of Cars");
+        TableColumn<Lane,String> carsCol = new TableColumn<>("# of Cars");
         carsCol.setCellValueFactory(c-> new SimpleStringProperty(""+c.getValue().getCarList().size()));
         TableColumn<Lane,String> avgCol = new TableColumn<>("AVG Waiting Time");
         avgCol.setCellValueFactory(c-> new SimpleStringProperty(calcAverageForLane(c.getValue())));
@@ -143,7 +154,7 @@ public class main_window_controller {
     @FXML
     public void startSimulation(){
         if (simInstance==null)
-            simInstance = new MainSim(true,0,algo,mode,cr1);
+            simInstance = new MainSim(true,Integer.parseInt(iterationsTxt.getText()),algo,mode,cr1);
         tableUpdater = new TableUpdater(simInstance);
         updateThread = new Thread(tableUpdater);
         updateThread.start();
@@ -219,11 +230,33 @@ public class main_window_controller {
                 if (_ms!=null) {
 
                     try {
-                        TimeUnit.MILLISECONDS.sleep(500);
+                        TimeUnit.MILLISECONDS.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                     ArrayList<Lane> lanes = _ms.getLaneList();
+                    for (int i=0; i<lanes.size(); i++){
+                        Lane l = lanes.get(i);
+                        switch (i)
+                        {
+                            case 0:
+                                if (l.is_green()) label1.setStyle("-fx-background-color: #3FCA56; -fx-background-radius:10");
+                                else label1.setStyle("-fx-background-color: red; -fx-background-radius:10");
+                                break;
+                            case 1:
+                                if (l.is_green()) label2.setStyle("-fx-background-color: #3FCA56; -fx-background-radius:10");
+                                else label2.setStyle("-fx-background-color: red; -fx-background-radius:10");
+                                break;
+                            case 2:
+                                if (l.is_green()) label3.setStyle("-fx-background-color: #3FCA56; -fx-background-radius:10");
+                                else label3.setStyle("-fx-background-color: red; -fx-background-radius:10");
+                                break;
+                            case 3:
+                                if (l.is_green()) label4.setStyle("-fx-background-color: #3FCA56; -fx-background-radius:10");
+                                else label4.setStyle("-fx-background-color: red; -fx-background-radius:10");
+                                break;
+                        }
+                    }
 //                    for (Lane l : lanes){
 //                        System.out.println(l.getCarList().size());
 //                    }

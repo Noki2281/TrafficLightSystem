@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.chart.*?>
 <?import java.lang.*?>
@@ -8,41 +9,41 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="540.0" prefWidth="809.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.report_page_controller">
+<AnchorPane prefHeight="650.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.report_page_controller">
    <children>
-      <TableView fx:id="tableview" layoutX="151.0" layoutY="87.0" prefHeight="183.0" prefWidth="520.0" />
-      <Label layoutX="139.0" layoutY="30.0" text="Traffic Level" />
-      <Label fx:id="traffic_label" layoutX="208.0" layoutY="30.0" text="Label">
+      <ImageView fitHeight="272.0" fitWidth="486.0" layoutX="524.0" layoutY="388.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <image>
+            <Image url="@1.jpg" />
+         </image>
+      </ImageView>
+      <TableView fx:id="tableview" layoutX="20.0" layoutY="91.0" prefHeight="128.0" prefWidth="952.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+      <Label layoutX="151.0" layoutY="36.0" text="Algorithem" />
+      <Label fx:id="algorithem_label" layoutX="254.0" layoutY="36.0" text="Label">
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Label>
-      <Label layoutX="139.0" layoutY="54.0" text="Algorithem" />
-      <Label fx:id="algorithem_label" layoutX="208.0" layoutY="54.0" text="Label">
+      <Label layoutX="327.0" layoutY="36.0" text="Car Insert Method" />
+      <Label fx:id="insert_method_label" layoutX="483.0" layoutY="36.0" text="Label">
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Label>
-      <Label layoutX="327.0" layoutY="30.0" text="Car Insert Method" />
-      <Label fx:id="insert_method_label" layoutX="431.0" layoutY="30.0" text="Label">
+      <Label layoutX="150.0" layoutY="60.0" text="Number of Lanes" />
+      <Label fx:id="number_of_lanes_label" layoutX="254.0" layoutY="60.0" text="Label">
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Label>
-      <Label layoutX="327.0" layoutY="54.0" text="Number of Lanes" />
-      <Label fx:id="number_of_lanes_label" layoutX="431.0" layoutY="54.0" text="Label">
+      <Label layoutX="585.0" layoutY="36.0" text="# Cars Entered the Crossroad" />
+      <Label fx:id="total_avg_label" layoutX="483.0" layoutY="60.0" text="Label">
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Label>
-      <Label layoutX="507.0" layoutY="30.0" text="Total Number of Cars" />
-      <Label fx:id="total_avg_label" layoutX="663.0" layoutY="54.0" text="Label">
+      <Label layoutX="327.0" layoutY="60.0" text="Total Average Waiting Time" />
+      <Label fx:id="total_cars_entered_label" layoutX="753.0" layoutY="36.0" text="Label">
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Label>
-      <Label layoutX="507.0" layoutY="54.0" text="Total Average Waiting Time" />
-      <Label fx:id="total_cars_label" layoutX="663.0" layoutY="30.0" text="Label">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font></Label>
-      <PieChart fx:id="pie" layoutX="84.0" layoutY="270.0" prefHeight="256.0" prefWidth="321.0" />
-      <BarChart fx:id="bar_chart" layoutX="407.0" layoutY="270.0" prefHeight="256.0" prefWidth="321.0">
+      <PieChart fx:id="pie" layoutX="114.0" layoutY="419.0" prefHeight="215.0" prefWidth="358.0" AnchorPane.leftAnchor="95.0" />
+      <BarChart fx:id="bar_chart" layoutX="527.0" layoutY="423.0" prefHeight="205.0" prefWidth="388.0" AnchorPane.rightAnchor="95.0">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
@@ -50,6 +51,50 @@
           <NumberAxis side="LEFT" />
         </yAxis>
       </BarChart>
-      <Label layoutX="139.0" layoutY="281.0" text="Green Time" />
+      <Label layoutX="196.0" layoutY="423.0" text="Green Time" />
+      <Label layoutX="337.0" layoutY="423.0" text="Lane 4 = Lane 1 + Lane 3" />
+      <Label fx:id="total_cars_passed_label" layoutX="753.0" layoutY="60.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="585.0" layoutY="60.0" text="# Cars Passed the Crossroad" />
+      <LineChart fx:id="line_chart" layoutX="20.0" layoutY="219.0" prefHeight="205.0" prefWidth="952.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </LineChart>
+      <MenuBar layoutX="10.0" layoutY="18.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="File">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Open..." />
+                  <MenuItem mnemonicParsing="false" text="Save" />
+                  <MenuItem mnemonicParsing="false" text="Save as..." />
+                  <MenuItem mnemonicParsing="false" text="Close" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Edit">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Delete" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Data">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Import..." />
+                  <MenuItem mnemonicParsing="false" text="Export..." />
+                  <MenuItem mnemonicParsing="false" text="Reset" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="About" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
    </children>
 </AnchorPane>
